@@ -2,1846 +2,372 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KIW KIW - Chat App</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KIW KIW</title>
 <style>
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-}
-
-:root{
-    --pink:#ff4f91;
-    --pink2:#ff8db7;
-    --purple:#8d5cff;
-    --dark:#120b18;
-    --dark2:#1b1023;
-    --card:rgba(25,15,31,.92);
-    --text:#fff;
-    --muted:#b9aabd;
-    --border:rgba(255,255,255,.12);
-}
-
-body{
-    font-family:Arial,Helvetica,sans-serif;
-    min-height:100vh;
-    color:var(--text);
-    overflow-x:hidden;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(18,8,23,.55),
-            rgba(76,18,57,.55)
-        ),
-        url("https://i.ibb.co/HLcCG6L7/image.png");
-
-    background-size:cover;
-    background-position:center;
-    background-attachment:fixed;
-}
-
-/* animated background */
-body::before{
-    content:"";
-    position:fixed;
-    inset:-100px;
-    z-index:-1;
-
-    background:
-        radial-gradient(circle at 20% 20%,rgba(255,78,145,.25),transparent 25%),
-        radial-gradient(circle at 80% 70%,rgba(141,92,255,.25),transparent 25%);
-
-    animation:bgMove 8s ease-in-out infinite alternate;
-}
-
-@keyframes bgMove{
-    from{
-        transform:scale(1) translate(0,0);
-    }
-    to{
-        transform:scale(1.12) translate(25px,-20px);
-    }
-}
-
-/* ================= LOGIN ================= */
-
-.auth-page{
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-}
-
-.auth-box{
-    width:100%;
-    max-width:420px;
-    padding:30px;
-
-    background:rgba(16,9,22,.91);
-    border:1px solid rgba(255,100,160,.28);
-    border-radius:25px;
-
-    box-shadow:
-        0 25px 80px rgba(0,0,0,.55),
-        0 0 50px rgba(255,70,140,.08);
-
-    backdrop-filter:blur(15px);
-}
-
-.brand{
-    text-align:center;
-    margin-bottom:25px;
-}
-
-.brand h1{
-    font-size:38px;
-    font-weight:900;
-
-    background:linear-gradient(
-        90deg,
-        #ff77aa,
-        #fff,
-        #b894ff
-    );
-
-    -webkit-background-clip:text;
-    color:transparent;
-}
-
-.brand p{
-    color:var(--muted);
-    font-size:12px;
-    margin-top:6px;
-}
-
-.tabs{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    margin-bottom:20px;
-    background:#0d0812;
-    padding:4px;
-    border-radius:12px;
-}
-
-.tabs button{
-    border:0;
-    background:transparent;
-    color:#95899b;
-    padding:12px;
-    cursor:pointer;
-    border-radius:9px;
-    font-weight:bold;
-}
-
-.tabs button.active{
-    color:#fff;
-    background:linear-gradient(135deg,var(--pink),var(--purple));
-}
-
-.form{
-    display:none;
-}
-
-.form.active{
-    display:block;
-}
-
-.input-group{
-    margin-bottom:14px;
-}
-
-.input-group label{
-    display:block;
-    color:#cfc1d3;
-    font-size:11px;
-    margin-bottom:6px;
-}
-
-.input-group input{
-    width:100%;
-    padding:13px 14px;
-
-    border:1px solid var(--border);
-    border-radius:11px;
-
-    background:#0c0810;
-    color:white;
-    outline:none;
-
-    font-size:13px;
-}
-
-.input-group input:focus{
-    border-color:var(--pink);
-    box-shadow:0 0 0 3px rgba(255,79,145,.08);
-}
-
-.main-btn{
-    width:100%;
-    border:0;
-    padding:14px;
-    border-radius:12px;
-
-    color:#fff;
-    font-weight:800;
-    cursor:pointer;
-
-    background:linear-gradient(
-        135deg,
-        var(--pink),
-        var(--purple)
-    );
-
-    transition:.25s;
-}
-
-.main-btn:hover{
-    transform:translateY(-2px);
-    box-shadow:0 10px 30px rgba(255,65,140,.25);
-}
-
-.note{
-    margin-top:14px;
-    color:#887b8e;
-    font-size:10px;
-    text-align:center;
-    line-height:1.6;
-}
-
-/* ================= APP ================= */
-
-.app{
-    display:none;
-    height:100vh;
-}
-
-.app.active{
-    display:flex;
-}
-
-/* SIDEBAR */
-
-.sidebar{
-    width:330px;
-    background:rgba(13,8,17,.94);
-    border-right:1px solid var(--border);
-
-    display:flex;
-    flex-direction:column;
-
-    backdrop-filter:blur(15px);
-}
-
-.app-header{
-    padding:18px;
-    border-bottom:1px solid var(--border);
-}
-
-.app-logo{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.app-logo strong{
-    font-size:22px;
-
-    background:linear-gradient(
-        90deg,
-        #ff6fa4,
-        #b692ff
-    );
-
-    -webkit-background-clip:text;
-    color:transparent;
-}
-
-.logout{
-    border:1px solid rgba(255,255,255,.12);
-    background:#170d1d;
-    color:#aaa;
-    padding:7px 10px;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:10px;
-}
-
-/* PROFILE */
-
-.profile{
-    padding:15px 18px;
-    display:flex;
-    align-items:center;
-    gap:11px;
-}
-
-.avatar{
-    width:43px;
-    height:43px;
-    border-radius:50%;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    background:linear-gradient(135deg,var(--pink),var(--purple));
-    font-weight:900;
-}
-
-.profile-name{
-    font-size:13px;
-    font-weight:bold;
-}
-
-.profile-number{
-    color:#887c8e;
-    font-size:10px;
-    margin-top:3px;
-}
-
-/* ADD CONTACT */
-
-.add-contact{
-    padding:0 15px 15px;
-}
-
-.add-row{
-    display:flex;
-    gap:7px;
-}
-
-.add-row input{
-    flex:1;
-    min-width:0;
-
-    padding:11px;
-    border-radius:10px;
-
-    background:#0b0710;
-    color:white;
-
-    border:1px solid var(--border);
-    outline:none;
-}
-
-.add-row button{
-    width:45px;
-    border:0;
-    border-radius:10px;
-
-    color:#fff;
-    background:linear-gradient(
-        135deg,
-        var(--pink),
-        var(--purple)
-    );
-
-    cursor:pointer;
-}
-
-/* CONTACT */
-
-.contact-title{
-    padding:5px 18px 10px;
-    color:#807384;
-    font-size:10px;
-    text-transform:uppercase;
-    letter-spacing:1px;
-}
-
-.contacts{
-    overflow-y:auto;
-    flex:1;
-}
-
-.contact{
-    padding:13px 18px;
-    display:flex;
-    gap:11px;
-    align-items:center;
-    cursor:pointer;
-    border-left:3px solid transparent;
-    transition:.2s;
-}
-
-.contact:hover,
-.contact.active{
-    background:rgba(255,79,145,.08);
-    border-left-color:var(--pink);
-}
-
-.contact-info{
-    min-width:0;
-    flex:1;
-}
-
-.contact-name{
-    font-size:12px;
-    font-weight:bold;
-}
-
-.contact-preview{
-    margin-top:4px;
-    color:#83778a;
-    font-size:10px;
-
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-}
-
-/* ================= CHAT ================= */
-
-.chat{
-    flex:1;
-    min-width:0;
-    display:flex;
-    flex-direction:column;
-
-    background:rgba(8,5,11,.68);
-}
-
-.chat-header{
-    height:73px;
-    padding:12px 20px;
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    border-bottom:1px solid var(--border);
-
-    background:rgba(15,8,20,.75);
-    backdrop-filter:blur(12px);
-}
-
-.chat-user{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.chat-user-name{
-    font-weight:bold;
-    font-size:13px;
-}
-
-.online{
-    color:#56e59a;
-    font-size:9px;
-    margin-top:3px;
-}
-
-.call-buttons{
-    display:flex;
-    gap:7px;
-}
-
-.call-buttons button{
-    width:36px;
-    height:36px;
-
-    border:1px solid var(--border);
-    border-radius:10px;
-
-    background:#160d1c;
-    color:white;
-    cursor:pointer;
-}
-
-.call-buttons button:hover{
-    background:var(--pink);
-}
-
-/* MESSAGES */
-
-.messages{
-    flex:1;
-    overflow-y:auto;
-    padding:25px;
-
-    display:flex;
-    flex-direction:column;
-    gap:9px;
-}
-
-.empty-chat{
-    margin:auto;
-    text-align:center;
-    color:#776a7d;
-}
-
-.empty-chat div{
-    font-size:45px;
-    margin-bottom:10px;
-}
-
-.empty-chat p{
-    font-size:11px;
-}
-
-/* BUBBLE */
-
-.message{
-    max-width:70%;
-    padding:10px 13px;
-    border-radius:14px;
-
-    font-size:12px;
-    line-height:1.5;
-
-    word-break:break-word;
-}
-
-.message.me{
-    align-self:flex-end;
-
-    background:linear-gradient(
-        135deg,
-        #e53f7f,
-        #754bd0
-    );
-
-    border-bottom-right-radius:4px;
-}
-
-.message.other{
-    align-self:flex-start;
-
-    background:#211728;
-    border:1px solid rgba(255,255,255,.07);
-
-    border-bottom-left-radius:4px;
-}
-
-.message-time{
-    display:block;
-    text-align:right;
-    font-size:8px;
-    opacity:.6;
-    margin-top:4px;
-}
-
-/* INPUT */
-
-.chat-input{
-    padding:13px 17px;
-
-    border-top:1px solid var(--border);
-
-    background:rgba(13,7,17,.92);
-}
-
-.send-row{
-    display:flex;
-    gap:8px;
-}
-
-.send-row input{
-    flex:1;
-    padding:12px 14px;
-
-    background:#0a0610;
-    color:white;
-
-    border:1px solid var(--border);
-    border-radius:12px;
-    outline:none;
-}
-
-.send-row button{
-    width:45px;
-    border:0;
-    border-radius:12px;
-
-    color:white;
-
-    background:linear-gradient(
-        135deg,
-        var(--pink),
-        var(--purple)
-    );
-
-    cursor:pointer;
-}
-
-/* ================= MODAL ================= */
-
-.modal{
-    position:fixed;
-    inset:0;
-
-    background:rgba(0,0,0,.7);
-
-    display:none;
-    align-items:center;
-    justify-content:center;
-
-    z-index:500;
-}
-
-.modal.show{
-    display:flex;
-}
-
-.modal-box{
-    width:90%;
-    max-width:350px;
-
-    background:#160d1d;
-    border:1px solid rgba(255,255,255,.1);
-    border-radius:18px;
-
-    padding:25px;
-    text-align:center;
-}
-
-.modal-box h3{
-    margin-bottom:8px;
-}
-
-.modal-box p{
-    color:#9e90a3;
-    font-size:11px;
-    line-height:1.6;
-}
-
-.modal-box button{
-    margin-top:18px;
-    padding:10px 25px;
-    border:0;
-    border-radius:9px;
-    background:var(--pink);
-    color:#fff;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-/* ================= MOBILE ================= */
-
-.mobile-menu{
-    display:none;
-}
-
-@media(max-width:700px){
-
-    .app{
-        height:100dvh;
-    }
-
-    .sidebar{
-        width:100%;
-    }
-
-    .chat{
-        display:none;
-    }
-
-    .app.mobile-chat .sidebar{
-        display:none;
-    }
-
-    .app.mobile-chat .chat{
-        display:flex;
-    }
-
-    .mobile-menu{
-        display:block;
-        border:0;
-        background:none;
-        color:#fff;
-        font-size:20px;
-        cursor:pointer;
-        margin-right:8px;
-    }
-
-    .message{
-        max-width:82%;
-    }
-
-    .auth-box{
-        padding:23px;
-    }
-}
+*{box-sizing:border-box}html,body{margin:0;height:100%;font-family:Arial,sans-serif;color:#fff}
+body{overflow:hidden;background:#120812 url("https://i.ibb.co/HLcCG6L7/image.png") center/cover fixed no-repeat}
+body:before{content:"";position:fixed;inset:-8%;z-index:-1;background:radial-gradient(circle at 20% 20%,#ff4f9140,transparent 30%),radial-gradient(circle at 80% 70%,#8d5cff40,transparent 30%);animation:bg 10s ease-in-out infinite alternate}
+@keyframes bg{to{transform:scale(1.08) translate(20px,-15px)}}
+button,input{font:inherit}.hidden{display:none!important}
+.auth{height:100%;display:grid;place-items:center;padding:18px}.card{width:min(420px,100%);padding:28px;border-radius:24px;background:#100914e8;border:1px solid #ffffff18;box-shadow:0 20px 70px #0009;backdrop-filter:blur(14px)}
+.logo{text-align:center;font-size:42px;font-weight:900;background:linear-gradient(90deg,#ff6fa4,#fff,#a887ff);color:transparent;background-clip:text;-webkit-background-clip:text}.sub{text-align:center;color:#bbaabd;font-size:12px;margin:6px 0 24px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;background:#09050d;padding:4px;border-radius:12px;margin-bottom:18px}.tabs button{border:0;background:transparent;color:#9b8d9f;padding:12px;border-radius:9px;cursor:pointer}.tabs .on{background:linear-gradient(135deg,#ff4f91,#8d5cff);color:white}
+.form{display:none}.form.on{display:block}.field{margin-bottom:13px}.field label{display:block;font-size:11px;color:#cdbfd0;margin-bottom:6px}.field input{width:100%;padding:13px;border-radius:11px;border:1px solid #ffffff14;background:#09060d;color:#fff;outline:0}.primary{width:100%;padding:13px;border:0;border-radius:11px;color:#fff;font-weight:800;cursor:pointer;background:linear-gradient(135deg,#ff4f91,#8d5cff)}.note{text-align:center;color:#807487;font-size:10px;line-height:1.6;margin-top:13px}
+.app{height:100%;display:flex;background:#09050dcc}.side{width:330px;display:flex;flex-direction:column;background:#0d0817f2;border-right:1px solid #ffffff12;backdrop-filter:blur(15px)}.top{padding:17px;border-bottom:1px solid #ffffff12;display:flex;align-items:center;justify-content:space-between}.brand{font-size:23px;font-weight:900;background:linear-gradient(90deg,#ff6fa4,#b692ff);color:transparent;background-clip:text;-webkit-background-clip:text}.logout{border:1px solid #ffffff12;background:#180d20;color:#bbb;padding:7px 10px;border-radius:8px;cursor:pointer;font-size:10px}
+.me{padding:15px;display:flex;gap:10px;align-items:center}.avatar{width:43px;height:43px;min-width:43px;border-radius:50%;display:grid;place-items:center;font-weight:900;background:linear-gradient(135deg,#ff4f91,#8d5cff)}.small{font-size:10px;color:#8e8092;margin-top:3px}.add{padding:0 15px 15px;display:flex;gap:7px}.add input{min-width:0;flex:1;padding:11px;border:1px solid #ffffff12;background:#09060d;color:#fff;border-radius:10px;outline:0}.add button{width:45px;border:0;border-radius:10px;background:linear-gradient(135deg,#ff4f91,#8d5cff);color:white;font-size:20px;cursor:pointer}.label{padding:3px 17px 9px;color:#77697e;font-size:10px;text-transform:uppercase;letter-spacing:1px}.contacts{overflow:auto;flex:1}.contact{display:flex;gap:10px;padding:12px 16px;cursor:pointer;border-left:3px solid transparent}.contact:hover,.contact.active{background:#ff4f9110;border-left-color:#ff4f91}.contact .avatar{width:38px;height:38px;min-width:38px;font-size:12px}.ci{min-width:0}.cn{font-size:12px;font-weight:bold}.cp{font-size:10px;color:#807386;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chat{flex:1;display:flex;flex-direction:column;min-width:0}.head{height:70px;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;background:#100919e8;border-bottom:1px solid #ffffff12}.user{display:flex;align-items:center;gap:10px}.user strong{font-size:13px}.online{font-size:9px;color:#56e59a;margin-top:3px}.actions{display:flex;gap:7px}.actions button,.back{width:36px;height:36px;border:1px solid #ffffff12;border-radius:10px;background:#180d20;color:#fff;cursor:pointer}.back{display:none}.messages{flex:1;overflow:auto;padding:22px;display:flex;flex-direction:column;gap:8px}.empty{margin:auto;text-align:center;color:#76697b}.empty b{font-size:44px;display:block;margin-bottom:8px}.empty span{font-size:11px}.msg{max-width:min(70%,520px);padding:10px 13px;border-radius:14px;font-size:12px;line-height:1.5;word-break:break-word}.meMsg{align-self:flex-end;background:linear-gradient(135deg,#e53f7f,#754bd0);border-bottom-right-radius:4px}.otherMsg{align-self:flex-start;background:#211728;border:1px solid #ffffff0c;border-bottom-left-radius:4px}.time{display:block;text-align:right;font-size:8px;opacity:.55;margin-top:4px}.composer{padding:12px 15px;background:#0d0712f2;border-top:1px solid #ffffff12}.send{display:flex;gap:7px}.send input{flex:1;min-width:0;padding:12px 14px;border:1px solid #ffffff12;border-radius:12px;background:#09060d;color:#fff;outline:0}.send button{width:46px;border:0;border-radius:12px;background:linear-gradient(135deg,#ff4f91,#8d5cff);color:#fff;cursor:pointer}
+.modal{position:fixed;inset:0;background:#000b;display:grid;place-items:center;z-index:5}.modalbox{width:min(360px,90%);padding:24px;border-radius:18px;background:#160d1d;border:1px solid #ffffff12;text-align:center}.modalbox p{font-size:11px;color:#aa9aac;line-height:1.6}.modalbox button{margin-top:10px;padding:9px 22px;border:0;border-radius:9px;background:#ff4f91;color:white;font-weight:bold}
+@media(max-width:700px){.side{width:100%}.chat{display:none}.app.mobile .side{display:none}.app.mobile .chat{display:flex}.back{display:block;margin-right:3px}.msg{max-width:84%}}
 </style>
 </head>
-
 <body>
+<section id="auth" class="auth">
+<div class="card">
+<div class="logo">KIW KIW</div>
+<div class="sub">Chat antar teman secara realtime</div>
+<div class="tabs"><button id="tl" class="on" onclick="tab('login')">LOGIN</button><button id="tr" onclick="tab('register')">DAFTAR</button></div>
 
-<!-- ================= AUTH ================= -->
+<form id="login" class="form on" onsubmit="login(event)">
+<div class="field"><label>NOMOR TELEPON</label><input id="lphone" required inputmode="tel"></div>
+<div class="field"><label>PIN / SANDI ANGKA</label><input id="lpin" required type="password" inputmode="numeric"></div>
+<button class="primary">MASUK</button>
+</form>
 
-<div class="auth-page" id="authPage">
-
-    <div class="auth-box">
-
-        <div class="brand">
-            <h1>KIW KIW</h1>
-            <p>Chat sederhana untuk terhubung dengan teman</p>
-        </div>
-
-        <div class="tabs">
-
-            <button
-                id="loginTab"
-                class="active"
-                onclick="switchAuth('login')">
-                LOGIN
-            </button>
-
-            <button
-                id="registerTab"
-                onclick="switchAuth('register')">
-                DAFTAR
-            </button>
-
-        </div>
-
-
-        <!-- LOGIN -->
-
-        <form
-            class="form active"
-            id="loginForm"
-            onsubmit="login(event)">
-
-            <div class="input-group">
-
-                <label>Nomor Telepon</label>
-
-                <input
-                    id="loginPhone"
-                    type="tel"
-                    placeholder="Contoh: 08123456789"
-                    required>
-
-            </div>
-
-
-            <div class="input-group">
-
-                <label>Sandi Angka</label>
-
-                <input
-                    id="loginPin"
-                    type="password"
-                    inputmode="numeric"
-                    maxlength="12"
-                    placeholder="Masukkan sandi"
-                    required>
-
-            </div>
-
-
-            <button class="main-btn">
-                MASUK KE KIW KIW
-            </button>
-
-        </form>
-
-
-        <!-- REGISTER -->
-
-        <form
-            class="form"
-            id="registerForm"
-            onsubmit="register(event)">
-
-            <div class="input-group">
-
-                <label>Nama / Username</label>
-
-                <input
-                    id="regName"
-                    type="text"
-                    maxlength="30"
-                    placeholder="Nama kamu"
-                    required>
-
-            </div>
-
-
-            <div class="input-group">
-
-                <label>Nomor Telepon</label>
-
-                <input
-                    id="regPhone"
-                    type="tel"
-                    maxlength="20"
-                    placeholder="Contoh: 08123456789"
-                    required>
-
-            </div>
-
-
-            <div class="input-group">
-
-                <label>Sandi Aplikasi - Angka Saja</label>
-
-                <input
-                    id="regPin"
-                    type="password"
-                    inputmode="numeric"
-                    maxlength="12"
-                    placeholder="Minimal 4 angka"
-                    required>
-
-            </div>
-
-
-            <button class="main-btn">
-                BUAT AKUN
-            </button>
-
-        </form>
-
-
-        <div class="note">
-            Versi demo. Data akun disimpan secara lokal
-            pada browser ini.
-        </div>
-
-    </div>
-
+<form id="register" class="form" onsubmit="register(event)">
+<div class="field"><label>NAMA / USERNAME</label><input id="rname" required maxlength="30"></div>
+<div class="field"><label>NOMOR TELEPON</label><input id="rphone" required inputmode="tel"></div>
+<div class="field"><label>PIN / SANDI ANGKA</label><input id="rpin" required type="password" inputmode="numeric" pattern="[0-9]{4,12}" minlength="4" maxlength="12"></div>
+<button class="primary">BUAT AKUN</button>
+</form>
+<div class="note">Versi ini memakai server. Akun dan pesan dapat dipakai dari HP/PC berbeda.</div>
 </div>
-
-
-<!-- ================= APPLICATION ================= -->
-
-<div class="app" id="app">
-
-
-    <!-- SIDEBAR -->
-
-    <aside class="sidebar">
-
-        <div class="app-header">
-
-            <div class="app-logo">
-
-                <strong>KIW KIW</strong>
-
-                <button
-                    class="logout"
-                    onclick="logout()">
-                    Keluar
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <div class="profile">
-
-            <div
-                class="avatar"
-                id="myAvatar">
-                K
-            </div>
-
-            <div>
-
-                <div
-                    class="profile-name"
-                    id="myName">
-                    User
-                </div>
-
-                <div
-                    class="profile-number"
-                    id="myPhone">
-                    -
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- ADD -->
-
-        <div class="add-contact">
-
-            <div class="add-row">
-
-                <input
-                    id="addPhone"
-                    type="tel"
-                    placeholder="Nomor telepon teman">
-
-                <button
-                    onclick="addContact()">
-                    +
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <div class="contact-title">
-            Kontak
-        </div>
-
-
-        <div
-            class="contacts"
-            id="contacts">
-        </div>
-
-    </aside>
-
-
-    <!-- CHAT -->
-
-    <main class="chat">
-
-        <header class="chat-header">
-
-            <div class="chat-user">
-
-                <button
-                    class="mobile-menu"
-                    onclick="backToContacts()">
-                    ‹
-                </button>
-
-                <div
-                    class="avatar"
-                    id="chatAvatar">
-                    ?
-                </div>
-
-                <div>
-
-                    <div
-                        class="chat-user-name"
-                        id="chatName">
-                        Pilih kontak
-                    </div>
-
-                    <div class="online">
-                        ● Demo chat
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="call-buttons">
-
-                <button onclick="showCall('Panggilan suara')">
-                    ☎
-                </button>
-
-                <button onclick="showCall('Panggilan video')">
-                    ▣
-                </button>
-
-            </div>
-
-        </header>
-
-
-        <div
-            class="messages"
-            id="messages">
-
-            <div class="empty-chat">
-
-                <div>💬</div>
-
-                <p>
-                    Pilih kontak untuk mulai chat
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div class="chat-input">
-
-            <div class="send-row">
-
-                <input
-                    id="messageInput"
-                    type="text"
-                    placeholder="Tulis pesan..."
-                    onkeydown="handleEnter(event)">
-
-                <button
-                    onclick="sendMessage()">
-                    ➤
-                </button>
-
-            </div>
-
-        </div>
-
-    </main>
-
-</div>
-
-
-<!-- MODAL -->
-
-<div
-    class="modal"
-    id="modal">
-
-    <div class="modal-box">
-
-        <h3 id="modalTitle">
-            KIW KIW
-        </h3>
-
-        <p id="modalText">
-            Demo
-        </p>
-
-        <button onclick="closeModal()">
-            TUTUP
-        </button>
-
-    </div>
-
-</div>
-
+</section>
+
+<section id="app" class="app hidden">
+<aside class="side">
+<div class="top"><div class="brand">KIW KIW</div><button class="logout" onclick="logout()">KELUAR</button></div>
+<div class="me"><div id="myAvatar" class="avatar">K</div><div><b id="myName">-</b><div id="myPhone" class="small">-</div></div></div>
+<div class="add"><input id="addPhone" placeholder="Nomor telepon teman"><button onclick="addContact()">+</button></div>
+<div class="label">Kontak</div><div id="contacts" class="contacts"></div>
+</aside>
+
+<main class="chat">
+<header class="head">
+<div class="user"><button class="back" onclick="back()">‹</button><div id="chatAvatar" class="avatar">?</div><div><strong id="chatName">Pilih kontak</strong><div id="status" class="online">● siap</div></div></div>
+<div class="actions"><button onclick="callDemo('suara')">☎</button><button onclick="callDemo('video')">▣</button></div>
+</header>
+<div id="messages" class="messages"><div class="empty"><b>💬</b><span>Pilih kontak untuk mulai chat</span></div></div>
+<div class="composer"><div class="send"><input id="message" placeholder="Tulis pesan..." onkeydown="if(event.key==='Enter'){event.preventDefault();send()}"><button onclick="send()">➤</button></div></div>
+</main>
+</section>
+
+<div id="modal" class="modal hidden"><div class="modalbox"><h3 id="mt">KIW KIW</h3><p id="mx"></p><button onclick="closeModal()">TUTUP</button></div></div>
 
 <script>
+const API = location.origin;
+let token=localStorage.getItem('kiw_token'), me=null, selected=null, timer=null;
 
-/* ==========================================
-   STORAGE
-========================================== */
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+const phone=s=>String(s||'').replace(/\D/g,'');
+const initial=s=>(s||'K').charAt(0).toUpperCase();
 
-const USERS_KEY = "kiwkiw_users";
-const CURRENT_KEY = "kiwkiw_current";
-const CONTACT_KEY = "kiwkiw_contacts";
-const CHAT_KEY = "kiwkiw_chats";
+function tab(t){$('tl').classList.toggle('on',t==='login');$('tr').classList.toggle('on',t==='register');$('login').classList.toggle('on',t==='login');$('register').classList.toggle('on',t==='register')}
+function modal(t,x){$('mt').textContent=t;$('mx').textContent=x;$('modal').classList.remove('hidden')}
+function closeModal(){$('modal').classList.add('hidden')}
 
-let users = JSON.parse(
-    localStorage.getItem(USERS_KEY) || "[]"
-);
-
-let contacts = JSON.parse(
-    localStorage.getItem(CONTACT_KEY) || "[]"
-);
-
-let chats = JSON.parse(
-    localStorage.getItem(CHAT_KEY) || "{}"
-);
-
-let currentUser = null;
-let selectedContact = null;
-
-
-/* ==========================================
-   HELPERS
-========================================== */
-
-function saveAll(){
-
-    localStorage.setItem(
-        USERS_KEY,
-        JSON.stringify(users)
-    );
-
-    localStorage.setItem(
-        CONTACT_KEY,
-        JSON.stringify(contacts)
-    );
-
-    localStorage.setItem(
-        CHAT_KEY,
-        JSON.stringify(chats)
-    );
-
+async function api(path,opt={}){
+  const headers={'Content-Type':'application/json',...(opt.headers||{})};
+  if(token) headers.Authorization='Bearer '+token;
+  const r=await fetch(API+path,{...opt,headers});
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok) throw new Error(d.error||'Terjadi kesalahan');
+  return d;
 }
 
-
-function cleanPhone(phone){
-
-    return phone
-        .replace(/\D/g,"")
-        .trim();
-
+async function register(e){
+ e.preventDefault();
+ try{
+  const d=await api('/api/register',{method:'POST',body:JSON.stringify({name:$('rname').value.trim(),phone:phone($('rphone').value),pin:$('rpin').value})});
+  token=d.token;localStorage.setItem('kiw_token',token);await boot();
+ }catch(x){modal('Daftar gagal',x.message)}
 }
-
-
-function getInitial(name){
-
-    return (name || "K")
-        .charAt(0)
-        .toUpperCase();
-
+async function login(e){
+ e.preventDefault();
+ try{
+  const d=await api('/api/login',{method:'POST',body:JSON.stringify({phone:phone($('lphone').value),pin:$('lpin').value})});
+  token=d.token;localStorage.setItem('kiw_token',token);await boot();
+ }catch(x){modal('Login gagal',x.message)}
 }
-
-
-/* ==========================================
-   AUTH TABS
-========================================== */
-
-function switchAuth(type){
-
-    document
-        .getElementById("loginTab")
-        .classList.toggle(
-            "active",
-            type === "login"
-        );
-
-    document
-        .getElementById("registerTab")
-        .classList.toggle(
-            "active",
-            type === "register"
-        );
-
-    document
-        .getElementById("loginForm")
-        .classList.toggle(
-            "active",
-            type === "login"
-        );
-
-    document
-        .getElementById("registerForm")
-        .classList.toggle(
-            "active",
-            type === "register"
-        );
-
+async function boot(){
+ try{
+  me=(await api('/api/me')).user;
+  $('auth').classList.add('hidden');$('app').classList.remove('hidden');
+  $('myName').textContent=me.name;$('myPhone').textContent='+'+me.phone;$('myAvatar').textContent=initial(me.name);
+  await loadContacts();
+  if(timer)clearInterval(timer);
+  timer=setInterval(refresh,1500);
+ }catch(x){localStorage.removeItem('kiw_token');token=null}
 }
-
-
-/* ==========================================
-   REGISTER
-========================================== */
-
-function register(event){
-
-    event.preventDefault();
-
-    const name =
-        document
-        .getElementById("regName")
-        .value
-        .trim();
-
-    const phone =
-        cleanPhone(
-            document
-            .getElementById("regPhone")
-            .value
-        );
-
-    const pin =
-        document
-        .getElementById("regPin")
-        .value
-        .trim();
-
-
-    if(!/^\d+$/.test(pin)){
-
-        showModal(
-            "Sandi tidak valid",
-            "Sandi aplikasi hanya boleh menggunakan angka."
-        );
-
-        return;
-    }
-
-
-    if(pin.length < 4){
-
-        showModal(
-            "Sandi terlalu pendek",
-            "Gunakan minimal 4 angka."
-        );
-
-        return;
-    }
-
-
-    if(!name || !phone){
-
-        showModal(
-            "Data belum lengkap",
-            "Isi semua data terlebih dahulu."
-        );
-
-        return;
-    }
-
-
-    if(users.some(u => u.phone === phone)){
-
-        showModal(
-            "Nomor sudah terdaftar",
-            "Silakan gunakan nomor lain atau login."
-        );
-
-        return;
-    }
-
-
-    const user = {
-        id:Date.now().toString(),
-        name:name,
-        phone:phone,
-        pin:pin
-    };
-
-
-    users.push(user);
-
-    currentUser = user;
-
-    localStorage.setItem(
-        USERS_KEY,
-        JSON.stringify(users)
-    );
-
-    localStorage.setItem(
-        CURRENT_KEY,
-        user.id
-    );
-
-    openApp();
-
+async function loadContacts(){
+ const d=await api('/api/contacts');const box=$('contacts');box.innerHTML='';
+ if(!d.contacts.length){box.innerHTML='<div style="padding:22px 17px;color:#76697b;font-size:10px">Belum ada kontak.<br>Masukkan nomor teman yang sudah terdaftar.</div>';return}
+ d.contacts.forEach(c=>{
+  const el=document.createElement('div');el.className='contact '+(selected?.id===c.id?'active':'');
+  el.innerHTML='<div class="avatar">'+esc(initial(c.name))+'</div><div class="ci"><div class="cn">'+esc(c.name)+'</div><div class="cp">'+esc(c.phone)+'</div></div>';
+  el.onclick=()=>select(c);box.appendChild(el)
+ })
 }
-
-
-/* ==========================================
-   LOGIN
-========================================== */
-
-function login(event){
-
-    event.preventDefault();
-
-    const phone =
-        cleanPhone(
-            document
-            .getElementById("loginPhone")
-            .value
-        );
-
-    const pin =
-        document
-        .getElementById("loginPin")
-        .value
-        .trim();
-
-
-    const user = users.find(
-        u =>
-            u.phone === phone &&
-            u.pin === pin
-    );
-
-
-    if(!user){
-
-        showModal(
-            "Login gagal",
-            "Nomor telepon atau sandi tidak cocok."
-        );
-
-        return;
-    }
-
-
-    currentUser = user;
-
-    localStorage.setItem(
-        CURRENT_KEY,
-        user.id
-    );
-
-    openApp();
-
+async function addContact(){
+ const p=phone($('addPhone').value);if(!p)return modal('Nomor belum diisi','Masukkan nomor teman.');
+ try{const d=await api('/api/contacts',{method:'POST',body:JSON.stringify({phone:p})});$('addPhone').value='';await loadContacts();select(d.contact)}
+ catch(x){modal('Tidak bisa menambah',x.message)}
 }
-
-
-/* ==========================================
-   OPEN APP
-========================================== */
-
-function openApp(){
-
-    document
-        .getElementById("authPage")
-        .style.display = "none";
-
-    document
-        .getElementById("app")
-        .classList.add("active");
-
-
-    document
-        .getElementById("myName")
-        .textContent = currentUser.name;
-
-    document
-        .getElementById("myPhone")
-        .textContent = "+" + currentUser.phone;
-
-    document
-        .getElementById("myAvatar")
-        .textContent = getInitial(
-            currentUser.name
-        );
-
-
-    loadContacts();
-
+async function select(c){
+ selected=c;$('chatName').textContent=c.name;$('chatAvatar').textContent=initial(c.name);$('app').classList.add('mobile');await loadMessages()
 }
-
-
-/* ==========================================
-   ADD CONTACT
-========================================== */
-
-function addContact(){
-
-    const phone =
-        cleanPhone(
-            document
-            .getElementById("addPhone")
-            .value
-        );
-
-
-    if(!phone){
-
-        showModal(
-            "Nomor belum diisi",
-            "Masukkan nomor telepon teman."
-        );
-
-        return;
-    }
-
-
-    if(phone === currentUser.phone){
-
-        showModal(
-            "Tidak bisa",
-            "Nomor sendiri tidak dapat ditambahkan."
-        );
-
-        return;
-    }
-
-
-    const user = users.find(
-        u => u.phone === phone
-    );
-
-
-    if(!user){
-
-        showModal(
-            "Pengguna tidak ditemukan",
-            "Nomor tersebut belum memiliki akun KIW KIW pada browser demo ini."
-        );
-
-        return;
-    }
-
-
-    if(
-        contacts.some(
-            c =>
-                c.owner === currentUser.id &&
-                c.phone === phone
-        )
-    ){
-
-        showModal(
-            "Sudah ada",
-            "Kontak tersebut sudah ada."
-        );
-
-        return;
-    }
-
-
-    contacts.push({
-
-        owner:currentUser.id,
-        phone:user.phone,
-        name:user.name
-
-    });
-
-
-    saveAll();
-
-    document
-        .getElementById("addPhone")
-        .value = "";
-
-    loadContacts();
-
-
-    selectContact(user);
-
+async function loadMessages(){
+ if(!selected)return;
+ const d=await api('/api/messages/'+selected.id);const box=$('messages');box.innerHTML='';
+ if(!d.messages.length){box.innerHTML='<div class="empty"><b>💗</b><span>Belum ada pesan. Mulai percakapan.</span></div>';return}
+ d.messages.forEach(m=>{
+  const el=document.createElement('div');el.className='msg '+(m.sender_id===me.id?'meMsg':'otherMsg');
+  const dt=new Date(m.created_at).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+  el.innerHTML=esc(m.text)+'<span class="time">'+dt+'</span>';box.appendChild(el)
+ });box.scrollTop=box.scrollHeight
 }
-
-
-/* ==========================================
-   LOAD CONTACTS
-========================================== */
-
-function loadContacts(){
-
-    const box =
-        document
-        .getElementById("contacts");
-
-    box.innerHTML = "";
-
-
-    const myContacts =
-        contacts.filter(
-            c =>
-                c.owner === currentUser.id
-        );
-
-
-    if(myContacts.length === 0){
-
-        box.innerHTML = `
-            <div style="
-                padding:25px 18px;
-                color:#716577;
-                font-size:10px;
-                line-height:1.7;
-            ">
-                Belum ada kontak.<br>
-                Tambahkan nomor telepon pengguna KIW KIW di atas.
-            </div>
-        `;
-
-        return;
-    }
-
-
-    myContacts.forEach(contact => {
-
-        const div =
-            document.createElement("div");
-
-        div.className = "contact";
-
-        div.innerHTML = `
-
-            <div class="avatar"
-                 style="width:38px;height:38px;font-size:12px">
-                ${getInitial(contact.name)}
-            </div>
-
-            <div class="contact-info">
-
-                <div class="contact-name">
-                    ${escapeHTML(contact.name)}
-                </div>
-
-                <div class="contact-preview">
-                    ${contact.phone}
-                </div>
-
-            </div>
-
-        `;
-
-
-        div.onclick = () => {
-
-            const user =
-                users.find(
-                    u =>
-                        u.phone === contact.phone
-                );
-
-            if(user){
-                selectContact(user);
-            }
-
-        };
-
-
-        box.appendChild(div);
-
-    });
-
+async function send(){
+ const text=$('message').value.trim();if(!text||!selected)return;
+ $('message').value='';
+ try{await api('/api/messages',{method:'POST',body:JSON.stringify({to: selected.id,text})});await loadMessages()}catch(x){modal('Pesan gagal',x.message)}
 }
-
-
-/* ==========================================
-   SELECT CONTACT
-========================================== */
-
-function selectContact(user){
-
-    selectedContact = user;
-
-
-    document
-        .getElementById("chatName")
-        .textContent = user.name;
-
-    document
-        .getElementById("chatAvatar")
-        .textContent = getInitial(
-            user.name
-        );
-
-
-    document
-        .getElementById("app")
-        .classList.add("mobile-chat");
-
-
-    loadMessages();
-
-}
-
-
-/* ==========================================
-   CHAT KEY
-========================================== */
-
-function chatKey(){
-
-    if(!currentUser || !selectedContact){
-        return null;
-    }
-
-    const ids = [
-        currentUser.id,
-        selectedContact.id
-    ].sort();
-
-    return ids.join("_");
-
-}
-
-
-/* ==========================================
-   SEND MESSAGE
-========================================== */
-
-function sendMessage(){
-
-    if(!selectedContact){
-
-        showModal(
-            "Pilih kontak",
-            "Pilih kontak terlebih dahulu."
-        );
-
-        return;
-    }
-
-
-    const input =
-        document
-        .getElementById("messageInput");
-
-    const text =
-        input.value.trim();
-
-
-    if(!text){
-        return;
-    }
-
-
-    const key = chatKey();
-
-
-    if(!chats[key]){
-        chats[key] = [];
-    }
-
-
-    chats[key].push({
-
-        sender:currentUser.id,
-        text:text,
-        time:new Date().toLocaleTimeString(
-            "id-ID",
-            {
-                hour:"2-digit",
-                minute:"2-digit"
-            }
-        )
-
-    });
-
-
-    saveAll();
-
-    input.value = "";
-
-    loadMessages();
-
-}
-
-
-/* ==========================================
-   LOAD MESSAGES
-========================================== */
-
-function loadMessages(){
-
-    const box =
-        document
-        .getElementById("messages");
-
-    box.innerHTML = "";
-
-
-    if(!selectedContact){
-
-        box.innerHTML = `
-            <div class="empty-chat">
-                <div>💬</div>
-                <p>Pilih kontak untuk mulai chat</p>
-            </div>
-        `;
-
-        return;
-    }
-
-
-    const key = chatKey();
-
-    const messages =
-        chats[key] || [];
-
-
-    if(messages.length === 0){
-
-        box.innerHTML = `
-            <div class="empty-chat">
-                <div>💗</div>
-                <p>Belum ada pesan. Mulai percakapan.</p>
-            </div>
-        `;
-
-        return;
-    }
-
-
-    messages.forEach(message => {
-
-        const div =
-            document.createElement("div");
-
-        div.className =
-            "message " +
-            (
-                message.sender === currentUser.id
-                    ? "me"
-                    : "other"
-            );
-
-
-        div.innerHTML = `
-            ${escapeHTML(message.text)}
-            <span class="message-time">
-                ${message.time}
-            </span>
-        `;
-
-
-        box.appendChild(div);
-
-    });
-
-
-    box.scrollTop =
-        box.scrollHeight;
-
-}
-
-
-/* ==========================================
-   ENTER SEND
-========================================== */
-
-function handleEnter(event){
-
-    if(event.key === "Enter"){
-
-        event.preventDefault();
-
-        sendMessage();
-
-    }
-
-}
-
-
-/* ==========================================
-   CALL UI
-========================================== */
-
-function showCall(type){
-
-    if(!selectedContact){
-
-        showModal(
-            "Pilih kontak",
-            "Pilih teman terlebih dahulu."
-        );
-
-        return;
-    }
-
-
-    showModal(
-        type,
-        "Fitur panggilan adalah tampilan demo. Panggilan antarperangkat memerlukan server/WebRTC."
-    );
-
-}
-
-
-/* ==========================================
-   BACK MOBILE
-========================================== */
-
-function backToContacts(){
-
-    document
-        .getElementById("app")
-        .classList.remove("mobile-chat");
-
-}
-
-
-/* ==========================================
-   LOGOUT
-========================================== */
-
-function logout(){
-
-    localStorage.removeItem(
-        CURRENT_KEY
-    );
-
-    currentUser = null;
-    selectedContact = null;
-
-    document
-        .getElementById("app")
-        .classList.remove("active");
-
-    document
-        .getElementById("authPage")
-        .style.display = "flex";
-
-    document
-        .getElementById("loginForm")
-        .reset();
-
-}
-
-
-/* ==========================================
-   MODAL
-========================================== */
-
-function showModal(title,text){
-
-    document
-        .getElementById("modalTitle")
-        .textContent = title;
-
-    document
-        .getElementById("modalText")
-        .textContent = text;
-
-    document
-        .getElementById("modal")
-        .classList.add("show");
-
-}
-
-
-function closeModal(){
-
-    document
-        .getElementById("modal")
-        .classList.remove("show");
-
-}
-
-
-/* ==========================================
-   SECURITY DISPLAY
-========================================== */
-
-function escapeHTML(value){
-
-    return String(value)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-
-}
-
-
-/* ==========================================
-   AUTO LOGIN
-========================================== */
-
-window.addEventListener(
-    "DOMContentLoaded",
-    () => {
-
-        const id =
-            localStorage.getItem(
-                CURRENT_KEY
-            );
-
-
-        if(id){
-
-            const user =
-                users.find(
-                    u => u.id === id
-                );
-
-            if(user){
-
-                currentUser = user;
-
-                openApp();
-
-            }
-
-        }
-
-    }
-);
-
+async function refresh(){try{await loadContacts();if(selected)await loadMessages()}catch(e){}}
+function back(){$('app').classList.remove('mobile')}
+async function logout(){try{await api('/api/logout',{method:'POST'})}catch(e){}localStorage.removeItem('kiw_token');token=null;me=null;selected=null;location.reload()}
+function callDemo(type){if(selected)modal('Panggilan '+type,'Tombol ini sudah disiapkan. Panggilan antarperangkat memerlukan WebRTC + signaling server.')}
+if(token)boot();
 </script>
-
 </body>
 </html>
+======================================================================
+FILE: server.js
+======================================================================
+
+const express = require("express");
+const http = require("http");
+const path = require("path");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const Database = require("better-sqlite3");
+const { WebSocketServer } = require("ws");
+
+const PORT = process.env.PORT || 3000;
+const JWT_SECRET = process.env.JWT_SECRET || "GANTI_SECRET_INI_SEBELUM_PRODUKSI";
+
+const app = express();
+const server = http.createServer(app);
+const db = new Database("kiwkiw.db");
+
+app.use(express.json({limit:"32kb"}));
+app.use(express.static(path.join(__dirname, "public")));
+
+db.pragma("journal_mode = WAL");
+db.exec(`
+CREATE TABLE IF NOT EXISTS users(
+ id INTEGER PRIMARY KEY AUTOINCREMENT,
+ name TEXT NOT NULL,
+ phone TEXT NOT NULL UNIQUE,
+ pin_hash TEXT NOT NULL,
+ created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS contacts(
+ owner_id INTEGER NOT NULL,
+ contact_id INTEGER NOT NULL,
+ UNIQUE(owner_id,contact_id)
+);
+CREATE TABLE IF NOT EXISTS messages(
+ id INTEGER PRIMARY KEY AUTOINCREMENT,
+ sender_id INTEGER NOT NULL,
+ receiver_id INTEGER NOT NULL,
+ text TEXT NOT NULL,
+ created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+`);
+
+const sessions = new Map();
+const online = new Map();
+
+function cleanPhone(v){return String(v||"").replace(/\D/g,"").slice(0,20)}
+function auth(req,res,next){
+ const h=req.headers.authorization||"";
+ if(!h.startsWith("Bearer "))return res.status(401).json({error:"Belum login"});
+ try{req.user=jwt.verify(h.slice(7),JWT_SECRET);next()}catch(e){return res.status(401).json({error:"Sesi login sudah tidak valid"})}
+}
+function publicUser(u){return {id:u.id,name:u.name,phone:u.phone}}
+function tokenFor(u){return jwt.sign({id:u.id},JWT_SECRET,{expiresIn:"30d"})}
+
+app.post("/api/register",async(req,res)=>{
+ const name=String(req.body.name||"").trim().slice(0,30);
+ const phone=cleanPhone(req.body.phone);
+ const pin=String(req.body.pin||"");
+ if(name.length<2)return res.status(400).json({error:"Nama minimal 2 karakter"});
+ if(phone.length<6)return res.status(400).json({error:"Nomor telepon tidak valid"});
+ if(!/^\d{4,12}$/.test(pin))return res.status(400).json({error:"PIN harus 4-12 angka"});
+ if(db.prepare("SELECT id FROM users WHERE phone=?").get(phone))return res.status(409).json({error:"Nomor sudah terdaftar"});
+ const hash=await bcrypt.hash(pin,12);
+ const info=db.prepare("INSERT INTO users(name,phone,pin_hash) VALUES(?,?,?)").run(name,phone,hash);
+ const u=db.prepare("SELECT * FROM users WHERE id=?").get(info.lastInsertRowid);
+ res.json({token:tokenFor(u),user:publicUser(u)});
+});
+
+app.post("/api/login",async(req,res)=>{
+ const phone=cleanPhone(req.body.phone),pin=String(req.body.pin||"");
+ const u=db.prepare("SELECT * FROM users WHERE phone=?").get(phone);
+ if(!u||!(await bcrypt.compare(pin,u.pin_hash)))return res.status(401).json({error:"Nomor atau PIN salah"});
+ res.json({token:tokenFor(u),user:publicUser(u)});
+});
+
+app.get("/api/me",auth,(req,res)=>{
+ const u=db.prepare("SELECT * FROM users WHERE id=?").get(req.user.id);
+ if(!u)return res.status(401).json({error:"Akun tidak ditemukan"});
+ res.json({user:publicUser(u)});
+});
+
+app.post("/api/logout",auth,(req,res)=>res.json({ok:true}));
+
+app.get("/api/contacts",auth,(req,res)=>{
+ const rows=db.prepare(`
+ SELECT u.id,u.name,u.phone FROM contacts c JOIN users u ON u.id=c.contact_id
+ WHERE c.owner_id=? ORDER BY u.name COLLATE NOCASE
+ `).all(req.user.id);
+ res.json({contacts:rows});
+});
+
+app.post("/api/contacts",auth,(req,res)=>{
+ const phone=cleanPhone(req.body.phone);
+ const u=db.prepare("SELECT id,name,phone FROM users WHERE phone=?").get(phone);
+ if(!u)return res.status(404).json({error:"Nomor tersebut belum terdaftar di KIW KIW"});
+ if(u.id===req.user.id)return res.status(400).json({error:"Tidak bisa menambahkan nomor sendiri"});
+ try{
+  db.prepare("INSERT INTO contacts(owner_id,contact_id) VALUES(?,?)").run(req.user.id,u.id);
+  // Tambahkan dua arah agar kedua pengguna dapat melihat kontak masing-masing.
+  db.prepare("INSERT OR IGNORE INTO contacts(owner_id,contact_id) VALUES(?,?)").run(u.id,req.user.id);
+ }catch(e){}
+ res.json({contact:u});
+});
+
+app.get("/api/messages/:id",auth,(req,res)=>{
+ const other=Number(req.params.id);
+ const allowed=db.prepare("SELECT 1 FROM contacts WHERE owner_id=? AND contact_id=?").get(req.user.id,other);
+ if(!allowed)return res.status(403).json({error:"Kontak belum ditambahkan"});
+ const rows=db.prepare(`
+ SELECT id,sender_id,receiver_id,text,created_at FROM messages
+ WHERE (sender_id=? AND receiver_id=?) OR (sender_id=? AND receiver_id=?)
+ ORDER BY id ASC LIMIT 500
+ `).all(req.user.id,other,other,req.user.id);
+ res.json({messages:rows});
+});
+
+app.post("/api/messages",auth,(req,res)=>{
+ const to=Number(req.body.to),text=String(req.body.text||"").trim();
+ if(!Number.isInteger(to)||!text)return res.status(400).json({error:"Pesan tidak valid"});
+ if(text.length>2000)return res.status(400).json({error:"Pesan terlalu panjang"});
+ const allowed=db.prepare("SELECT 1 FROM contacts WHERE owner_id=? AND contact_id=?").get(req.user.id,to);
+ if(!allowed)return res.status(403).json({error:"Tambahkan kontak terlebih dahulu"});
+ const info=db.prepare("INSERT INTO messages(sender_id,receiver_id,text) VALUES(?,?,?)").run(req.user.id,to,text);
+ const m=db.prepare("SELECT id,sender_id,receiver_id,text,created_at FROM messages WHERE id=?").get(info.lastInsertRowid);
+ broadcast(to,{type:"message",message:m});
+ broadcast(req.user.id,{type:"message",message:m});
+ res.json({message:m});
+});
+
+function broadcast(uid,data){
+ const ws=online.get(uid);if(ws&&ws.readyState===1)ws.send(JSON.stringify(data));
+}
+
+const wss=new WebSocketServer({server,path:"/ws"});
+wss.on("connection",(ws,req)=>{
+ const u=new URL(req.url,"http://localhost");
+ const token=u.searchParams.get("token");
+ try{
+  const p=jwt.verify(token,JWT_SECRET);
+  online.set(p.id,ws);
+  ws.send(JSON.stringify({type:"ready"}));
+  ws.on("close",()=>{if(online.get(p.id)===ws)online.delete(p.id)});
+ }catch(e){ws.close(1008,"Unauthorized")}
+});
+
+app.get("*",(req,res)=>{
+ if(req.path.startsWith("/api/"))return res.status(404).end();
+ res.sendFile(path.join(__dirname,"public","index.html"));
+});
+
+server.listen(PORT,()=>console.log(`KIW KIW berjalan di http://localhost:${PORT}`));
+
+======================================================================
+FILE: package.json
+======================================================================
+
+{
+  "name": "kiwkiw-chat",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^11.3.0",
+    "express": "^4.21.1",
+    "jsonwebtoken": "^9.0.2",
+    "ws": "^8.18.0"
+  }
+}
+======================================================================
+FILE: README.md
+======================================================================
+
+# KIW KIW — Chat Realtime
+
+## 1. Persiapan
+Install Node.js LTS di komputer/server.
+
+## 2. Jalankan
+Buka terminal di folder ini:
+
+```bash
+npm install
+```
+
+Kemudian:
+
+```bash
+npm start
+```
+
+Buka:
+`http://localhost:3000`
+
+Untuk perangkat lain dalam jaringan yang sama, buka alamat IP komputer server, misalnya:
+`http://192.168.1.10:3000`
+
+## 3. Agar bisa dipakai dari internet
+Upload folder ini ke VPS/hosting yang mendukung Node.js, lalu gunakan HTTPS/domain.
+Set environment variable:
+
+`JWT_SECRET=buat-string-rahasia-yang-panjang`
+
+Jangan memakai secret bawaan untuk produksi.
+
+## 4. Cara tes chat
+1. Buat akun A dengan nomor A.
+2. Buat akun B dari perangkat/browser lain dengan nomor B.
+3. Dari akun A, masukkan nomor B pada kolom tambah kontak.
+4. Buka kontak B dan kirim pesan.
+5. Pesan disimpan di SQLite dan tersedia dari perangkat lain.
+
+## Catatan
+Versi ini menyediakan chat teks realtime dengan polling + WebSocket notifikasi.
+Tombol suara/video masih placeholder. Panggilan nyata memerlukan WebRTC + signaling dan sebaiknya TURN server.
+PIN di server disimpan sebagai bcrypt hash, bukan plaintext.
